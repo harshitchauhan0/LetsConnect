@@ -27,7 +27,6 @@ class SignUpActivity : AppCompatActivity() {
     private var timing = 60L
     private lateinit var phoneNumber:String
     private lateinit var signUpActivitybinding:ActivitySignUpBinding
-    private lateinit var firebaseDatabase: FirebaseDatabase
     private lateinit var verificationCode:String
     private lateinit var token: PhoneAuthProvider.ForceResendingToken
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,7 +34,6 @@ class SignUpActivity : AppCompatActivity() {
         signUpActivitybinding = DataBindingUtil.setContentView(this,R.layout.activity_sign_up)
 
         auth = FirebaseAuth.getInstance()
-        firebaseDatabase = FirebaseDatabase.getInstance()
         signUpActivitybinding.progressbar.visibility = View.GONE
 
         signUpActivitybinding.countryCodeHolder.registerCarrierNumberEditText(signUpActivitybinding.number)
@@ -87,11 +85,11 @@ class SignUpActivity : AppCompatActivity() {
             })
 
         if(isResend){
-            Toast.makeText(applicationContext,"Resensding",Toast.LENGTH_LONG).show()
+//            Toast.makeText(applicationContext,"Resending",Toast.LENGTH_LONG).show()
             PhoneAuthProvider.verifyPhoneNumber(builder.setForceResendingToken(token).build())
         }
         else{
-            Toast.makeText(applicationContext,"New ",Toast.LENGTH_LONG).show()
+//            Toast.makeText(applicationContext,"New ",Toast.LENGTH_LONG).show()
             PhoneAuthProvider.verifyPhoneNumber(builder.build())
         }
     }

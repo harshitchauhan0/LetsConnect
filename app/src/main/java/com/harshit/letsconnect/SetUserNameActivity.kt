@@ -18,7 +18,7 @@ class SetUserNameActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var userID:String
     private lateinit var database: FirebaseFirestore
-     private var userModel: UserModel? = null
+    private var userModel: UserModel? = null
     private lateinit var phoneNumber:String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,7 +32,6 @@ class SetUserNameActivity : AppCompatActivity() {
         getName()
 
         binding.letsGoBtn.setOnClickListener {
-            binding.progressbar.visibility = View.VISIBLE
             setName()
         }
 
@@ -77,11 +76,11 @@ class SetUserNameActivity : AppCompatActivity() {
                 if(it.isSuccessful){
                     userModel = it.result.toObject(UserModel::class.java)
                     if(userModel!=null){
-                        binding.userNameET.setText(userModel!!.userName)
+                        binding.userNameET.setText(userModel?.userName)
                     }
                 }
                 else{
-
+                    Toast.makeText(applicationContext,it.exception.toString(),Toast.LENGTH_LONG).show()
                 }
             }
     }
