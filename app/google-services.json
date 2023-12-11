@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "843278050268",
+    "project_id": "letsconnect-15571",
+    "storage_bucket": "letsconnect-15571.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:843278050268:android:215a4bf35b4369f222e519",
+        "android_client_info": {
+          "package_name": "com.harshit.letsconnect"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDFTJfhgvfRWCfVTYpU165RrzSEmGyphgw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

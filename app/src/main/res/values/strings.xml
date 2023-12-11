@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">LetsConnect</string>
+    <string name="menu_home">Home</string>
+    <string name="profile">Profile</string>
+    <string name="group">Groups</string>
+    <string name="random">Random</string>
+    <string name="nav_header_title">Harshit</string>
+    <string name="nav_header_subtitle">imailharshit@gmail.com</string>
+    <string name="otp1">We will send you OTP</string>
+    <string name="otp2">(ONE TIME VERIFICATION)</string>
+    <string name="otp3">on this number.</string>
+</resources>
