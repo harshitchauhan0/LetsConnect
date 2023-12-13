@@ -41,4 +41,6 @@ class UserModel {
     fun setTimestamp(timestamp: Timestamp) {
         this.timestamp = timestamp
     }
+
+
 }

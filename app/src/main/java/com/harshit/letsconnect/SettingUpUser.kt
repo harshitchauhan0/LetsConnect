@@ -1,16 +1,20 @@
 package com.harshit.letsconnect
 
 import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
 import androidx.databinding.DataBindingUtil
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 import com.harshit.letsconnect.databinding.ActivitySettingUpUserBinding
+import java.util.Date
 
 class SettingUpUser : AppCompatActivity() {
     private lateinit var binding:ActivitySettingUpUserBinding
@@ -24,7 +28,6 @@ class SettingUpUser : AppCompatActivity() {
         if(intent.hasExtra("phone")){
             phoneNumber = intent.getStringExtra("phone").toString()
         }
-
         database = FirebaseFirestore.getInstance()
 
         uid = FirebaseAuth.getInstance().uid
@@ -34,14 +37,17 @@ class SettingUpUser : AppCompatActivity() {
         getUserName()
 
         binding.letsGoBtn.setOnClickListener {
+
             setName()
+
         }
+
     }
 
     private fun setName() {
 
         val name = binding.userNameET.text.toString()
-        if(name.isEmpty() or (name.length>3)){
+        if(name.isEmpty() or (name.length<3)){
             binding.userNameET.error = "Username is too short"
             return
         }
@@ -54,7 +60,7 @@ class SettingUpUser : AppCompatActivity() {
         }
 
         uid?.let {  i ->
-            database.collection("users").document(i).set(userModel as UserModel).addOnCompleteListener {
+            database.collection("users").document(i).set(userModel!!).addOnCompleteListener {
                 setInProgress(false)
                 if(it.isSuccessful){
                     Toast.makeText(applicationContext,"Username done", Toast.LENGTH_LONG).show()
