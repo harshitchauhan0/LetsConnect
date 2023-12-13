@@ -18,9 +18,6 @@
             android:name=".SettingUpUser"
             android:exported="false" />
         <activity
-            android:name=".GroupActivity"
-            android:exported="false" />
-        <activity
             android:name=".SignUpActivity"
             android:exported="false" />
         <activity
