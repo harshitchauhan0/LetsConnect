@@ -24,7 +24,6 @@ import java.util.concurrent.TimeUnit
 
 class SignUpActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
-    private var timing = 60L
     private lateinit var phoneNumber:String
     private lateinit var signUpActivitybinding:ActivitySignUpBinding
     private lateinit var verificationCode:String
@@ -76,7 +75,7 @@ class SignUpActivity : AppCompatActivity() {
 
                 override fun onCodeSent(p0: String, p1: PhoneAuthProvider.ForceResendingToken) {
                     super.onCodeSent(p0, p1)
-                    verificationCode = p0
+                    this@SignUpActivity.verificationCode = p0
                     token = p1
                     Toast.makeText(applicationContext,"OTP SENT",Toast.LENGTH_LONG).show()
                     setInProgress(false)
@@ -119,7 +118,7 @@ class SignUpActivity : AppCompatActivity() {
             setInProgress(false)
             if(it.isSuccessful){
                 Toast.makeText(applicationContext,"OTP Verification done",Toast.LENGTH_LONG).show()
-                startActivity(Intent(this,SetUserNameActivity::class.java).putExtra("phone",phoneNumber))
+                startActivity(Intent(this,SettingUpUser::class.java).putExtra("phone",phoneNumber))
             }
             else{
                 Toast.makeText(applicationContext,"OTP Verification failed",Toast.LENGTH_LONG).show()
@@ -135,14 +134,6 @@ class SignUpActivity : AppCompatActivity() {
         else{
             signUpActivitybinding.progressbar.visibility = View.GONE
             signUpActivitybinding.submitBTN.visibility = View.VISIBLE
-        }
-    }
-
-    override fun onStart() {
-        super.onStart()
-        if(auth.currentUser!=null){
-            startActivity(Intent(this,SetUserNameActivity::class.java))
-            finish()
         }
     }
 
