@@ -36,7 +36,6 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
     <TextView
-
         android:textColor="@color/black"
         android:textStyle="bold"
         android:fontFamily="sans-serif"

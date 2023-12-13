@@ -30,7 +30,7 @@ class IntroductionActivity : AppCompatActivity() {
         if(auth.currentUser!=null){
             if(sharedPreferences.getBoolean("logged",false)){
                 Toast.makeText(this,"You are logged in ",Toast.LENGTH_LONG).show()
-                startActivity(Intent(this, GroupActivity::class.java))
+                startActivity(Intent(this, MainActivity::class.java))
             }
             progressBar.visibility = View.VISIBLE
             sharedPreferences.edit().putBoolean("logged",true).apply()

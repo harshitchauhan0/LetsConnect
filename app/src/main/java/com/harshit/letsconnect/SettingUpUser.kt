@@ -64,7 +64,7 @@ class SettingUpUser : AppCompatActivity() {
                 setInProgress(false)
                 if(it.isSuccessful){
                     Toast.makeText(applicationContext,"Username done", Toast.LENGTH_LONG).show()
-                    val intent = Intent(this, GroupActivity::class.java)
+                    val intent = Intent(this, MainActivity::class.java)
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                     startActivity(intent)
                 }
