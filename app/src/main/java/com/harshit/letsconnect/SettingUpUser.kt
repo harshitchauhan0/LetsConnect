@@ -1,20 +1,16 @@
 package com.harshit.letsconnect
 
 import android.content.Intent
-import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.activity.result.ActivityResultLauncher
 import androidx.databinding.DataBindingUtil
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.storage.FirebaseStorage
 import com.harshit.letsconnect.databinding.ActivitySettingUpUserBinding
-import java.util.Date
 
 class SettingUpUser : AppCompatActivity() {
     private lateinit var binding:ActivitySettingUpUserBinding
@@ -53,7 +49,7 @@ class SettingUpUser : AppCompatActivity() {
         }
         setInProgress(true)
         if((userModel) !=null){
-            userModel!!.setName(name)
+            userModel!!.setPhoneNumber(name)
         }
         else{
             userModel = UserModel(phoneNumber,name,Timestamp.now())
@@ -69,7 +65,7 @@ class SettingUpUser : AppCompatActivity() {
                     startActivity(intent)
                 }
                 else{
-
+                    Log.v("TAG",it.exception.toString())
                 }
             }
         }
@@ -85,7 +81,7 @@ class SettingUpUser : AppCompatActivity() {
                     if(it.result.toObject(UserModel::class.java)!=null){
                         userModel = it.result.toObject(UserModel::class.java)!!
                         if(userModel!=null) {
-                            binding.userNameET.setText(userModel!!.getName())
+                            binding.userNameET.setText(userModel!!.getPhoneNumber())
                         }
                     }
                     else{
