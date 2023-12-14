@@ -22,6 +22,9 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.harshit.letsconnect.databinding.FragmentProfileBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class ProfileFragment : Fragment() {
 
@@ -90,35 +93,41 @@ class ProfileFragment : Fragment() {
     }
 
     private fun updateDatabase(){
-        database.collection("users").document(auth.uid!!).set(userModel).addOnCompleteListener {
-            setInProgress(false)
-            if(it.isSuccessful){
-                Toast.makeText(activity,"Update Successful",Toast.LENGTH_LONG).show()
-            }
-            else{
-                Toast.makeText(activity,"Update Failed",Toast.LENGTH_LONG).show()
-                Log.v("TAG",it.exception.toString())
+        CoroutineScope(Dispatchers.Default).launch {
+            database.collection("users").document(auth.uid!!).set(userModel).addOnCompleteListener {
+                setInProgress(false)
+                if(it.isSuccessful){
+                    Toast.makeText(activity,"Update Successful",Toast.LENGTH_LONG).show()
+                }
+                else{
+                    Toast.makeText(activity,"Update Failed",Toast.LENGTH_LONG).show()
+                    Log.v("TAG",it.exception.toString())
+                }
             }
         }
     }
 
     private fun getUserData() {
         setInProgress(true)
-        storageReference.downloadUrl.addOnCompleteListener {
-            if(it.isSuccessful){
-                val uri = it.result
-                Glide.with(this).load(uri).into(binding.profileImg)
+        CoroutineScope(Dispatchers.Default).launch {
+            storageReference.downloadUrl.addOnCompleteListener {
+                if(it.isSuccessful){
+                    val uri = it.result
+                    activity?.let { it1 -> Glide.with(it1).load(uri).into(binding.profileImg) }
+                }
             }
-        }
-        database.collection("users").document(auth.uid!!).get().addOnCompleteListener {
-            setInProgress(false)
-            if(it.isSuccessful){
-                userModel = it.result.toObject(UserModel::class.java)!!
-                binding.profileName.setText(userModel.getUsername())
-                binding.profileNumber.setText(userModel.getPhoneNumber())
+            database.collection("users").document(auth.uid!!).get().addOnCompleteListener {
+                setInProgress(false)
+                if(it.isSuccessful){
+                    userModel = it.result.toObject(UserModel::class.java)!!
+                    binding.profileName.setText(userModel.getUsername())
+                    binding.profileNumber.setText(userModel.getPhoneNumber())
 
+                }
             }
         }
+
+
     }
 
     private fun setInProgress(isProgress: Boolean){

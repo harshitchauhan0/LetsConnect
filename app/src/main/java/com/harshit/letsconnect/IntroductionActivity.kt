@@ -14,6 +14,7 @@ class IntroductionActivity : AppCompatActivity() {
     private lateinit var  progressBar:ProgressBar
     private lateinit var auth:FirebaseAuth
     private lateinit var sharedPreferences: SharedPreferences
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_introduction)
