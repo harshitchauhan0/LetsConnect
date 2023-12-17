@@ -21,9 +21,7 @@ class SettingUpUser : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this,R.layout.activity_setting_up_user)
-        if(intent.hasExtra("phone")){
-            phoneNumber = intent.getStringExtra("phone").toString()
-        }
+        phoneNumber = intent.getStringExtra("phone")!!
         database = FirebaseFirestore.getInstance()
 
         uid = FirebaseAuth.getInstance().uid
@@ -33,9 +31,7 @@ class SettingUpUser : AppCompatActivity() {
         getUserName()
 
         binding.letsGoBtn.setOnClickListener {
-
             setName()
-
         }
 
     }
@@ -49,10 +45,11 @@ class SettingUpUser : AppCompatActivity() {
         }
         setInProgress(true)
         if((userModel) !=null){
-            userModel!!.setPhoneNumber(name)
+            userModel!!.setUsername(name)
         }
         else{
-            userModel = UserModel(phoneNumber,name,Timestamp.now())
+            Log.v("TAG",phoneNumber)
+            userModel = UserModel(phoneNumber,name,Timestamp.now(),uid!!)
         }
 
         uid?.let {  i ->
@@ -81,7 +78,7 @@ class SettingUpUser : AppCompatActivity() {
                     if(it.result.toObject(UserModel::class.java)!=null){
                         userModel = it.result.toObject(UserModel::class.java)!!
                         if(userModel!=null) {
-                            binding.userNameET.setText(userModel!!.getPhoneNumber())
+                            binding.userNameET.setText(userModel!!.getUsername())
                         }
                     }
                     else{

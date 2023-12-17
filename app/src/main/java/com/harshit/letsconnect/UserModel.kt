@@ -1,20 +1,23 @@
 package com.harshit.letsconnect
 
 import com.google.firebase.Timestamp
+import java.io.Serializable
 
 class UserModel {
     private var phoneNumber: String = ""
     private var username: String = ""
     private lateinit var timestamp: Timestamp
+    private var userId:String = ""
 
     // Empty constructor
     constructor()
 
     // Constructor with all attributes
-    constructor(phoneNumber: String, username: String, timestamp: Timestamp) {
+    constructor(phoneNumber: String, username: String, timestamp: Timestamp,userId:String) {
         this.phoneNumber = phoneNumber
         this.username = username
         this.timestamp = timestamp
+        this.userId = userId
     }
 
     // Getters and setters
@@ -40,6 +43,18 @@ class UserModel {
 
     fun setTimestamp(timestamp: Timestamp) {
         this.timestamp = timestamp
+    }
+
+    fun getUserId(): String {
+        return userId
+    }
+
+    fun setUserId(userId: String) {
+        this.userId = userId
+    }
+
+    override fun toString(): String {
+        return "UserModel(phoneNumber='$phoneNumber', username='$username', timestamp=$timestamp, userId='$userId')"
     }
 
 

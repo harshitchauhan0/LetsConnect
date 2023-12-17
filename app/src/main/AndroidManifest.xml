@@ -15,6 +15,12 @@
         android:theme="@style/Theme.LetsConnect"
         tools:targetApi="31">
         <activity
+            android:name=".ChatActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SearchActivity"
+            android:exported="false" />
+        <activity
             android:name=".SettingUpUser"
             android:exported="false" />
         <activity

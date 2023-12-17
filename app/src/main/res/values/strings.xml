@@ -11,6 +11,6 @@
     <string name="otp3">on this number.</string>
     <string name="logout">Log Out</string>
     <string name="invite_friends">Invite Friends</string>
-    <!-- TODO: Remove or change this placeholder text -->
+    <string name="link">https://www.google.com/</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
