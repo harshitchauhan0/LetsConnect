@@ -142,10 +142,11 @@ class ChatActivity : AppCompatActivity() {
         val client = OkHttpClient()
         val url = "https://fcm.googleapis.com/fcm/send"
         val body: RequestBody = jsonObject.toString().toRequestBody(json)
+        TODO("I have to add Api key first")
         val request: Request = Request.Builder()
             .url(url)
             .post(body)
-            .header("Authorization", "Bearer AAAAxFdJ49w:APA91bHC_FfuqTM6fTXzr4xLLtbg8a6HCMkmtudKD180aF5AyJDzSY9EY5pCqdvku6hbB513KJFxaJRBxNzOSEZk2Z7MJ35AciD40QIivulaVqtdrbf0rn-MAaD8WNoAkcijqLZQaJ2S")
+            .header("Authorization", "Bearer ")
             .build()
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
