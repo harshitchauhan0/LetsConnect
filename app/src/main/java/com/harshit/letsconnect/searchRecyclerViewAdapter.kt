@@ -64,6 +64,8 @@ class searchRecyclerViewAdapter(options: FirestoreRecyclerOptions<UserModel>,con
             i.putExtra("uid",model.getUserId())
             i.putExtra("phone",model.getPhoneNumber())
             i.putExtra("time",model.getTimestamp().toDate())
+            i.putExtra("token",model.getToken())
+            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             ContextCompat.startActivity(context,i,null)
         }
     }

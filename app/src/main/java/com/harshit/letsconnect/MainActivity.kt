@@ -3,7 +3,9 @@ package com.harshit.letsconnect
 import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
@@ -16,6 +18,8 @@ import com.bumptech.glide.Glide
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.messaging.FirebaseMessaging
+import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.storage.FirebaseStorage
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.coroutines.CoroutineScope
@@ -27,6 +31,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var database: FirebaseFirestore
     private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var navigationView:NavigationView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -39,7 +44,7 @@ class MainActivity : AppCompatActivity() {
         sharedPreferences = getSharedPreferences("login", MODE_PRIVATE)
 
         val drawer = findViewById<DrawerLayout>(R.id.drawer_layout)
-        val navigationView = findViewById<NavigationView>(R.id.nav_view)
+        navigationView = findViewById(R.id.nav_view)
 
         appBarConfiguration = AppBarConfiguration.Builder(R.id.nav_home, R.id.nav_profile, R.id.nav_group, R.id.nav_random, R.id.nav_log_out, R.id.nav_invite)
             .setDrawerLayout(drawer)
@@ -48,6 +53,28 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(this, navController, appBarConfiguration)
         setupWithNavController(navigationView, navController)
 
+        setUpAppBar()
+        getFCMToken()
+    }
+
+    private fun getFCMToken() {
+        FirebaseMessaging.getInstance().token.addOnCompleteListener {
+            if(it.isSuccessful){
+                val token = it.result
+//                Log.v("TAG",token)
+                database.collection("users").document(auth.currentUser!!.uid).update("token",token).addOnCompleteListener {task->
+                    if(task.isSuccessful){
+                        Log.v("TAG","done")
+                    }
+                    else{
+                        Log.v("TAG",task.exception.toString())
+                    }
+                }
+            }
+        }
+    }
+
+    private fun setUpAppBar() {
         val headerView = navigationView.getHeaderView(0)
         val headerName = headerView.findViewById<TextView>(R.id.nav_header_name)
         val headerEmail = headerView.findViewById<TextView>(R.id.nav_header_email)

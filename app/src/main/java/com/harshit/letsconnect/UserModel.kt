@@ -8,7 +8,7 @@ class UserModel {
     private var username: String = ""
     private lateinit var timestamp: Timestamp
     private var userId:String = ""
-
+    private var token:String = ""
     // Empty constructor
     constructor()
 
@@ -51,6 +51,14 @@ class UserModel {
 
     fun setUserId(userId: String) {
         this.userId = userId
+    }
+
+    fun setToken(token:String){
+        this.token = token
+    }
+
+    fun getToken():String{
+        return token
     }
 
     override fun toString(): String {

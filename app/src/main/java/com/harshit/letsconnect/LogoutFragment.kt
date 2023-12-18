@@ -12,6 +12,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.messaging.FirebaseMessaging
+import com.google.firebase.messaging.FirebaseMessagingService
 
 
 class LogoutFragment : Fragment() {
@@ -25,12 +27,16 @@ class LogoutFragment : Fragment() {
             .setIcon(com.google.android.gms.base.R.drawable.common_full_open_on_phone)
             .setMessage("Are you sure you want to log out?")
             .setPositiveButton("Yes"){ _, _ ->
-                Toast.makeText(context,"You are logged out",Toast.LENGTH_LONG).show()
-                sp!!.edit().putBoolean("logged", false).apply()
-                FirebaseAuth.getInstance().signOut()
-                val intent = Intent(context, IntroductionActivity::class.java)
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                startActivity(intent)
+                FirebaseMessaging.getInstance().deleteToken().addOnCompleteListener {
+                    if(it.isSuccessful){
+                        Toast.makeText(context,"You are logged out",Toast.LENGTH_LONG).show()
+                        sp!!.edit().putBoolean("logged", false).apply()
+                        FirebaseAuth.getInstance().signOut()
+                        val intent = Intent(context, IntroductionActivity::class.java)
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                        startActivity(intent)
+                    }
+                }
             }
             .setNegativeButton("No"){ dialog, _ ->
                 dialog.dismiss()

@@ -70,6 +70,7 @@ class HomeRecyclerViewAdapter(options: FirestoreRecyclerOptions<ChatroomModel>,c
                     i.putExtra("uid",userModel?.getUserId())
                     i.putExtra("phone",userModel?.getPhoneNumber())
                     i.putExtra("time",userModel?.getTimestamp()?.toDate())
+                    i.putExtra("token",userModel?.getToken())
                     ContextCompat.startActivity(context,i,null)
                 }
             }

@@ -13,11 +13,21 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.harshit.letsconnect.databinding.ActivityChatBinding
-import java.util.Date
-
 import com.google.firebase.firestore.Query
+import com.harshit.letsconnect.databinding.ActivityChatBinding
 import de.hdodenhof.circleimageview.CircleImageView
+import okhttp3.Call
+import okhttp3.Callback
+import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
+import okhttp3.Response
+import org.json.JSONObject
+import java.io.IOException
+import java.util.Date
 
 
 class ChatActivity : AppCompatActivity() {
@@ -37,6 +47,7 @@ class ChatActivity : AppCompatActivity() {
         val profilePick:CircleImageView = findViewById(R.id.profile_image)
         val date: Date? = intent.getSerializableExtra("time") as? Date
         userModel =  UserModel(intent.getStringExtra("phone")!!,intent.getStringExtra("name")!!,Timestamp(date!!),intent.getStringExtra("uid")!!)
+        userModel.setToken(intent.getStringExtra("token")!!)
         binding.otherUsername.text = userModel.getUsername()
         chatroomId = getChatRoomId(auth.currentUser?.uid.toString(),userModel.getUserId())
         ExtraUtils.getOtherImage(userModel.getUserId()).downloadUrl.addOnCompleteListener {task->
@@ -89,12 +100,62 @@ class ChatActivity : AppCompatActivity() {
         database.collection("chatroom").document(chatroomId).collection("chats").add(messageModel).addOnCompleteListener {
             if(it.isSuccessful){
                 binding.chatMessageInput.setText("")
+                sendNotification(message)
             }
             else{
                 Log.v("TAG",it.exception.toString())
             }
         }
     }
+
+    private fun sendNotification(message: String) {
+        database.collection("users").document(auth.currentUser!!.uid).get().addOnCompleteListener {
+            if(it.isSuccessful){
+                val model = it.result.toObject(UserModel::class.java)
+                if(model!=null){
+                    try {
+                        val jsonObject = JSONObject()
+                        val notificationObj = JSONObject()
+                        notificationObj.put("title", model.getUsername())
+                        notificationObj.put("body", message)
+                        val dataObj = JSONObject()
+                        dataObj.put("userId", model.getUserId())
+                        jsonObject.put("notification", notificationObj)
+                        jsonObject.put("data", dataObj)
+                        jsonObject.put("to", userModel.getToken())
+                        callApi(jsonObject)
+                    } catch (e: Exception) {
+                        Log.v("TAG",e.toString())
+                    }
+                }
+            }
+        }
+    }
+
+    private fun callApi(jsonObject:JSONObject){
+        val json: MediaType = "application/json; charset=utf-8".toMediaType()
+        val client = OkHttpClient()
+        val url = "https://fcm.googleapis.com/fcm/send"
+        val body: RequestBody = jsonObject.toString().toRequestBody(json)
+        val request: Request = Request.Builder()
+            .url(url)
+            .post(body)
+            .header("Authorization", "Bearer AAAAxFdJ49w:APA91bHC_FfuqTM6fTXzr4xLLtbg8a6HCMkmtudKD180aF5AyJDzSY9EY5pCqdvku6hbB513KJFxaJRBxNzOSEZk2Z7MJ35AciD40QIivulaVqtdrbf0rn-MAaD8WNoAkcijqLZQaJ2S")
+            .build()
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+//                TODO("Not yet implemented")
+                Log.v("TAG",e.toString())
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+//                TODO("Not yet implemented")
+            }
+        })
+
+
+    }
+
 
     private fun getCreateChatRoomModel() {
 
