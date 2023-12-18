@@ -3,11 +3,12 @@ package com.harshit.letsconnect
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.AdapterDataObserver
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
@@ -15,11 +16,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.harshit.letsconnect.databinding.ActivityChatBinding
 import java.util.Date
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.Query
+import de.hdodenhof.circleimageview.CircleImageView
 
 
 class ChatActivity : AppCompatActivity() {
@@ -36,10 +34,18 @@ class ChatActivity : AppCompatActivity() {
         database = FirebaseFirestore.getInstance()
         auth = FirebaseAuth.getInstance()
         binding.backBtn.setOnClickListener { onBackPressed() }
+        val profilePick:CircleImageView = findViewById(R.id.profile_image)
         val date: Date? = intent.getSerializableExtra("time") as? Date
         userModel =  UserModel(intent.getStringExtra("phone")!!,intent.getStringExtra("name")!!,Timestamp(date!!),intent.getStringExtra("uid")!!)
         binding.otherUsername.text = userModel.getUsername()
         chatroomId = getChatRoomId(auth.currentUser?.uid.toString(),userModel.getUserId())
+        ExtraUtils.getOtherImage(userModel.getUserId()).downloadUrl.addOnCompleteListener {task->
+            if(task.isSuccessful){
+                val uri = task.result
+                Glide.with(applicationContext).load(uri).apply(RequestOptions.circleCropTransform()).into(profilePick)
+            }
+        }
+
         getCreateChatRoomModel()
 
         binding.messageSendBtn.setOnClickListener {
@@ -76,6 +82,7 @@ class ChatActivity : AppCompatActivity() {
     private fun sendMessage(message: String) {
         chatroomModel?.lastMessageSenderId = auth.currentUser!!.uid
         chatroomModel?.lastMessageTimestamp = Timestamp.now()
+        chatroomModel?.lastMessage = message
         database.collection("chatroom").document(chatroomId).set(chatroomModel as ChatroomModel)
 
         val messageModel = MessageModel(message,auth.currentUser!!.uid, Timestamp.now())

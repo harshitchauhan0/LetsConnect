@@ -32,7 +32,9 @@ class SearchActivity : AppCompatActivity() {
             }
         }
         binding.seachUsernameInput.requestFocus()
-        binding.backBtn.setOnClickListener { startActivity(Intent(this,MainActivity::class.java).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)) }
+        binding.backBtn.setOnClickListener {
+            startActivity(Intent(this,MainActivity::class.java))
+        }
     }
 
 

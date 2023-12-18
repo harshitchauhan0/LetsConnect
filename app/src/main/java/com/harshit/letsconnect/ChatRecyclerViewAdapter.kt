@@ -13,31 +13,26 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 
 
-class ChatRecyclerViewAdapter(
-    options: FirestoreRecyclerOptions<MessageModel?>,
-    var context: Context
-) :
+class ChatRecyclerViewAdapter(options: FirestoreRecyclerOptions<MessageModel?>,var context: Context) :
     FirestoreRecyclerAdapter<MessageModel, ChatRecyclerViewAdapter.ChatModelViewHolder>(options) {
      override fun onBindViewHolder(
         holder: ChatModelViewHolder,
         position: Int,
         model: MessageModel
     ) {
-        Log.i("haushd", "asjd")
-        if (model.senderId.equals(FirebaseUtils.currentUserId())) {
+        if (model.senderId == ExtraUtils.currentUserId()) {
             holder.leftChatLayout.visibility = View.GONE
             holder.rightChatLayout.visibility = View.VISIBLE
-            holder.rightChatTextview.setText(model.message)
+            holder.rightChatTextview.text = model.message
         } else {
             holder.rightChatLayout.visibility = View.GONE
             holder.leftChatLayout.visibility = View.VISIBLE
-            holder.leftChatTextview.setText(model.message)
+            holder.leftChatTextview.text = model.message
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatModelViewHolder {
-        val view: View =
-            LayoutInflater.from(context).inflate(R.layout.message_chat, parent, false)
+        val view: View = LayoutInflater.from(context).inflate(R.layout.message_chat, parent, false)
         return ChatModelViewHolder(view)
     }
 

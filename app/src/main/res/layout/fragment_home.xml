@@ -10,13 +10,12 @@
         android:layout_height="match_parent"
         tools:context=".HomeFragment">
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/constraintLayout"
                 >
 
                 <RelativeLayout
@@ -58,8 +57,13 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </ScrollView>
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/recyclerView"
+            android:layout_below="@+id/constraintLayout"
+            />
 
 
 

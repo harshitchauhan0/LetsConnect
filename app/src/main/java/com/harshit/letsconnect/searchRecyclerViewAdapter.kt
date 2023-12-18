@@ -11,6 +11,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
@@ -46,6 +48,13 @@ class searchRecyclerViewAdapter(options: FirestoreRecyclerOptions<UserModel>,con
         }
         else{
             holder.name.text = model.getUsername()
+        }
+
+        ExtraUtils.getOtherImage(model.getUserId()).downloadUrl.addOnCompleteListener {task->
+            if(task.isSuccessful){
+                val uri = task.result
+                Glide.with(context).load(uri).apply(RequestOptions.circleCropTransform()).into(holder.circleImageView);
+            }
         }
 
         holder.itemView.setOnClickListener {
