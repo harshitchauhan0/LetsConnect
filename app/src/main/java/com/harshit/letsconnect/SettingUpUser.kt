@@ -11,12 +11,13 @@ import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.harshit.letsconnect.databinding.ActivitySettingUpUserBinding
+import com.harshit.letsconnect.models.UserModel
 
 class SettingUpUser : AppCompatActivity() {
     private lateinit var binding:ActivitySettingUpUserBinding
     private lateinit var phoneNumber:String
     private lateinit var database:FirebaseFirestore
-    private var userModel:UserModel? = null
+    private var userModel: UserModel? = null
     private var uid:String? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

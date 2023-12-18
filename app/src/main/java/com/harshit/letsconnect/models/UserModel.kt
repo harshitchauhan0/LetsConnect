@@ -1,4 +1,4 @@
-package com.harshit.letsconnect
+package com.harshit.letsconnect.models
 
 import com.google.firebase.Timestamp
 import java.io.Serializable

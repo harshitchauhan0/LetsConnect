@@ -1,4 +1,4 @@
-package com.harshit.letsconnect
+package com.harshit.letsconnect.fragments
 
 import android.app.AlertDialog
 import android.content.Context
@@ -13,7 +13,8 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.messaging.FirebaseMessaging
-import com.google.firebase.messaging.FirebaseMessagingService
+import com.harshit.letsconnect.IntroductionActivity
+import com.harshit.letsconnect.R
 
 
 class LogoutFragment : Fragment() {

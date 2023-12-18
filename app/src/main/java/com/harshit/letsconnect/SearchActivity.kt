@@ -5,12 +5,12 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
 import androidx.databinding.DataBindingUtil
-import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.FirebaseFirestore
+import com.harshit.letsconnect.adapters.searchRecyclerViewAdapter
 import com.harshit.letsconnect.databinding.ActivitySearchBinding
+import com.harshit.letsconnect.models.UserModel
 
 class SearchActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySearchBinding
@@ -40,10 +40,11 @@ class SearchActivity : AppCompatActivity() {
 
     private fun search(string: String) {
 
-        val query = FirebaseFirestore.getInstance().collection("users").whereGreaterThanOrEqualTo("username",string)
+        val query = FirebaseFirestore.getInstance().collection("users")
+            .whereGreaterThanOrEqualTo("username",string).whereLessThanOrEqualTo("username",string+"uf8ff")
 
         val firestoreRecyclerOptions:FirestoreRecyclerOptions<UserModel>  = FirestoreRecyclerOptions.Builder<UserModel>()
-            .setQuery(query,UserModel::class.java).build()
+            .setQuery(query, UserModel::class.java).build()
 
 
         adapter = searchRecyclerViewAdapter(firestoreRecyclerOptions,this)

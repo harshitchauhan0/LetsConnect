@@ -1,4 +1,4 @@
-package com.harshit.letsconnect
+package com.harshit.letsconnect.fragments
 
 import android.content.Intent
 import android.os.Bundle
@@ -12,6 +12,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import com.harshit.letsconnect.models.ChatroomModel
+import com.harshit.letsconnect.extrasUtils.ExtraUtils
+import com.harshit.letsconnect.adapters.HomeRecyclerViewAdapter
+import com.harshit.letsconnect.R
+import com.harshit.letsconnect.SearchActivity
 import com.harshit.letsconnect.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
@@ -22,7 +27,7 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_home, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
         database = FirebaseFirestore.getInstance()
         searchBoxConfiguration()
 
@@ -34,10 +39,10 @@ class HomeFragment : Fragment() {
 
     private fun setRecyclerView() {
         val query = database.collection("chatroom")
-            .whereArrayContains("userIds",ExtraUtils.currentUserId()!!)
+            .whereArrayContains("userIds", ExtraUtils.currentUserId()!!)
             .orderBy("lastMessageTimestamp", Query.Direction.DESCENDING)
         val firestoreRecyclerOptions: FirestoreRecyclerOptions<ChatroomModel> = FirestoreRecyclerOptions.Builder<ChatroomModel>()
-            .setQuery(query,ChatroomModel::class.java).build()
+            .setQuery(query, ChatroomModel::class.java).build()
 
 
         adapter = HomeRecyclerViewAdapter(firestoreRecyclerOptions,requireContext())
@@ -67,7 +72,7 @@ class HomeFragment : Fragment() {
                 binding.seachUsernameInput.error = "Invalid Username"
             }
             else{
-                val intent = Intent(activity,SearchActivity::class.java)
+                val intent = Intent(activity, SearchActivity::class.java)
                 intent.putExtra("name",binding.seachUsernameInput.text.toString())
                 startActivity(intent)
             }

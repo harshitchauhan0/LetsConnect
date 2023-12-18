@@ -1,14 +1,11 @@
-package com.harshit.letsconnect
+package com.harshit.letsconnect.adapters
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -16,9 +13,13 @@ import com.bumptech.glide.request.RequestOptions
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
+import com.harshit.letsconnect.ChatActivity
+import com.harshit.letsconnect.extrasUtils.ExtraUtils
+import com.harshit.letsconnect.R
+import com.harshit.letsconnect.models.UserModel
 import de.hdodenhof.circleimageview.CircleImageView
 
-class searchRecyclerViewAdapter(options: FirestoreRecyclerOptions<UserModel>,context: Context) : FirestoreRecyclerAdapter<UserModel,searchRecyclerViewAdapter.MyViewHolder>(options) {
+class searchRecyclerViewAdapter(options: FirestoreRecyclerOptions<UserModel>, context: Context) : FirestoreRecyclerAdapter<UserModel, searchRecyclerViewAdapter.MyViewHolder>(options) {
 
     val context:Context
     init {
@@ -50,7 +51,7 @@ class searchRecyclerViewAdapter(options: FirestoreRecyclerOptions<UserModel>,con
             holder.name.text = model.getUsername()
         }
 
-        ExtraUtils.getOtherImage(model.getUserId()).downloadUrl.addOnCompleteListener {task->
+        ExtraUtils.getOtherImage(model.getUserId()).downloadUrl.addOnCompleteListener { task->
             if(task.isSuccessful){
                 val uri = task.result
                 Glide.with(context).load(uri).apply(RequestOptions.circleCropTransform()).into(holder.circleImageView);
@@ -59,7 +60,7 @@ class searchRecyclerViewAdapter(options: FirestoreRecyclerOptions<UserModel>,con
 
         holder.itemView.setOnClickListener {
 //            Log.v("TAG",model.toString())
-            val i = Intent(context,ChatActivity::class.java)
+            val i = Intent(context, ChatActivity::class.java)
             i.putExtra("name",model.getUsername())
             i.putExtra("uid",model.getUserId())
             i.putExtra("phone",model.getPhoneNumber())

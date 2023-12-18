@@ -1,4 +1,4 @@
-package com.harshit.letsconnect
+package com.harshit.letsconnect.fragments
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import com.harshit.letsconnect.R
 import com.harshit.letsconnect.databinding.FragmentInviteBinding
 
 class InviteFragment : Fragment() {
@@ -18,7 +19,7 @@ class InviteFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_invite, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_invite, container, false)
         binding.shareBTN.setOnClickListener {
             var message = binding.messageET.text.toString()
             if(TextUtils.isEmpty(message)){

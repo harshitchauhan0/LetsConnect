@@ -1,8 +1,7 @@
-package com.harshit.letsconnect
+package com.harshit.letsconnect.adapters
 
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,14 +10,17 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.harshit.letsconnect.extrasUtils.ExtraUtils
+import com.harshit.letsconnect.models.MessageModel
+import com.harshit.letsconnect.R
 
 
-class ChatRecyclerViewAdapter(options: FirestoreRecyclerOptions<MessageModel?>,var context: Context) :
+class ChatRecyclerViewAdapter(options: FirestoreRecyclerOptions<MessageModel?>, var context: Context) :
     FirestoreRecyclerAdapter<MessageModel, ChatRecyclerViewAdapter.ChatModelViewHolder>(options) {
      override fun onBindViewHolder(
-        holder: ChatModelViewHolder,
-        position: Int,
-        model: MessageModel
+         holder: ChatModelViewHolder,
+         position: Int,
+         model: MessageModel
     ) {
         if (model.senderId == ExtraUtils.currentUserId()) {
             holder.leftChatLayout.visibility = View.GONE

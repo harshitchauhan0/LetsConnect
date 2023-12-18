@@ -9,9 +9,9 @@ import android.view.View
 import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.harshit.letsconnect.models.UserModel
 
 class IntroductionActivity : AppCompatActivity() {
     private lateinit var  progressBar:ProgressBar

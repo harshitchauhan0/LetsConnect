@@ -14,7 +14,12 @@ import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import com.harshit.letsconnect.adapters.ChatRecyclerViewAdapter
 import com.harshit.letsconnect.databinding.ActivityChatBinding
+import com.harshit.letsconnect.extrasUtils.ExtraUtils
+import com.harshit.letsconnect.models.ChatroomModel
+import com.harshit.letsconnect.models.MessageModel
+import com.harshit.letsconnect.models.UserModel
 import de.hdodenhof.circleimageview.CircleImageView
 import okhttp3.Call
 import okhttp3.Callback
@@ -32,10 +37,10 @@ import java.util.Date
 
 class ChatActivity : AppCompatActivity() {
     private lateinit var binding:ActivityChatBinding
-    private lateinit var userModel:UserModel
+    private lateinit var userModel: UserModel
     private lateinit var database:FirebaseFirestore
     private lateinit var chatroomId:String
-    private lateinit var adapter:ChatRecyclerViewAdapter
+    private lateinit var adapter: ChatRecyclerViewAdapter
     private lateinit var auth: FirebaseAuth
     private var chatroomModel: ChatroomModel? = null
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,7 +55,7 @@ class ChatActivity : AppCompatActivity() {
         userModel.setToken(intent.getStringExtra("token")!!)
         binding.otherUsername.text = userModel.getUsername()
         chatroomId = getChatRoomId(auth.currentUser?.uid.toString(),userModel.getUserId())
-        ExtraUtils.getOtherImage(userModel.getUserId()).downloadUrl.addOnCompleteListener {task->
+        ExtraUtils.getOtherImage(userModel.getUserId()).downloadUrl.addOnCompleteListener { task->
             if(task.isSuccessful){
                 val uri = task.result
                 Glide.with(applicationContext).load(uri).apply(RequestOptions.circleCropTransform()).into(profilePick)

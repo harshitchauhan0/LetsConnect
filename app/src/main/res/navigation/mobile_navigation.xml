@@ -7,34 +7,34 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.harshit.letsconnect.HomeFragment"
+        android:name="com.harshit.letsconnect.fragments.HomeFragment"
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/nav_profile"
-        android:name="com.harshit.letsconnect.ProfileFragment"
+        android:name="com.harshit.letsconnect.fragments.ProfileFragment"
         android:label="@string/profile"
         tools:layout="@layout/fragment_profile" />
 
     <fragment
         android:id="@+id/nav_group"
-        android:name="com.harshit.letsconnect.GroupFragment"
+        android:name="com.harshit.letsconnect.fragments.GroupFragment"
         android:label="@string/group"
         tools:layout="@layout/fragment_group" />
     <fragment
         android:id="@+id/nav_random"
-        android:name="com.harshit.letsconnect.RandomFragment"
+        android:name="com.harshit.letsconnect.fragments.RandomFragment"
         android:label="@string/random"
         tools:layout="@layout/fragment_random" />
     <fragment
         android:id="@+id/nav_log_out"
-        android:name="com.harshit.letsconnect.LogoutFragment"
+        android:name="com.harshit.letsconnect.fragments.LogoutFragment"
         android:label="@string/logout"
         tools:layout="@layout/fragment_logout" />
     <fragment
         android:id="@+id/nav_invite"
-        android:name="com.harshit.letsconnect.InviteFragment"
+        android:name="com.harshit.letsconnect.fragments.InviteFragment"
         android:label="@string/invite_friends"
         tools:layout="@layout/fragment_invite" />
 </navigation>

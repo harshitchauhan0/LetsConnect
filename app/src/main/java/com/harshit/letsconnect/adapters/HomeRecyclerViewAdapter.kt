@@ -1,4 +1,4 @@
-package com.harshit.letsconnect
+package com.harshit.letsconnect.adapters
 
 import android.content.Context
 import android.content.Intent
@@ -13,10 +13,15 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.harshit.letsconnect.ChatActivity
+import com.harshit.letsconnect.models.ChatroomModel
+import com.harshit.letsconnect.extrasUtils.ExtraUtils
+import com.harshit.letsconnect.R
+import com.harshit.letsconnect.models.UserModel
 import de.hdodenhof.circleimageview.CircleImageView
 import java.text.SimpleDateFormat
 
-class HomeRecyclerViewAdapter(options: FirestoreRecyclerOptions<ChatroomModel>,context: Context) : FirestoreRecyclerAdapter<ChatroomModel,HomeRecyclerViewAdapter.MyViewHolder>(options) {
+class HomeRecyclerViewAdapter(options: FirestoreRecyclerOptions<ChatroomModel>, context: Context) : FirestoreRecyclerAdapter<ChatroomModel, HomeRecyclerViewAdapter.MyViewHolder>(options) {
 
     val context:Context
     init {
@@ -46,7 +51,7 @@ class HomeRecyclerViewAdapter(options: FirestoreRecyclerOptions<ChatroomModel>,c
                 val userModel = it.result.toObject(UserModel::class.java)
 
                 if (userModel != null) {
-                    ExtraUtils.getOtherImage(userModel.getUserId()).downloadUrl.addOnCompleteListener {task->
+                    ExtraUtils.getOtherImage(userModel.getUserId()).downloadUrl.addOnCompleteListener { task->
                         if(task.isSuccessful){
                             val uri = task.result
                             Glide.with(context).load(uri).apply(RequestOptions.circleCropTransform()).into(holder.circleImageView);
@@ -65,7 +70,7 @@ class HomeRecyclerViewAdapter(options: FirestoreRecyclerOptions<ChatroomModel>,c
                 holder.lastMessageTime.text = SimpleDateFormat("HH:MM").format(model.lastMessageTimestamp!!.toDate())
 
                 holder.itemView.setOnClickListener {
-                    val i = Intent(context,ChatActivity::class.java)
+                    val i = Intent(context, ChatActivity::class.java)
                     i.putExtra("name",userModel?.getUsername())
                     i.putExtra("uid",userModel?.getUserId())
                     i.putExtra("phone",userModel?.getPhoneNumber())
