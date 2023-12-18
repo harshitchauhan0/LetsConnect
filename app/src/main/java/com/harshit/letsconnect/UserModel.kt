@@ -13,7 +13,7 @@ class UserModel {
     constructor()
 
     // Constructor with all attributes
-    constructor(phoneNumber: String, username: String, timestamp: Timestamp,userId:String) {
+    constructor(phoneNumber: String, username: String, timestamp: Timestamp, userId: String) {
         this.phoneNumber = phoneNumber
         this.username = username
         this.timestamp = timestamp
@@ -56,6 +56,4 @@ class UserModel {
     override fun toString(): String {
         return "UserModel(phoneNumber='$phoneNumber', username='$username', timestamp=$timestamp, userId='$userId')"
     }
-
-
 }
