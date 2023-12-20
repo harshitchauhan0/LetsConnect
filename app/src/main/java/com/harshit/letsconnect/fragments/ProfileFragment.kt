@@ -20,6 +20,7 @@ import com.google.firebase.storage.StorageReference
 import com.harshit.letsconnect.R
 import com.harshit.letsconnect.models.UserModel
 import com.harshit.letsconnect.databinding.FragmentProfileBinding
+import com.harshit.letsconnect.extrasUtils.ExtraUtils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -56,7 +57,7 @@ class ProfileFragment : Fragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false)
         database = FirebaseFirestore.getInstance()
         auth = FirebaseAuth.getInstance()
-        storageReference = FirebaseStorage.getInstance().reference.child("profile").child(auth.uid!!)
+        storageReference = FirebaseStorage.getInstance().reference.child(ExtraUtils.PROFILE).child(auth.uid!!)
         getUserData()
         binding.profileImg.setOnClickListener {
             launcher.launch("image/*")
@@ -91,7 +92,7 @@ class ProfileFragment : Fragment() {
 
     private fun updateDatabase(){
         CoroutineScope(Dispatchers.Default).launch {
-            database.collection("users").document(auth.uid!!).set(userModel).addOnCompleteListener {
+            database.collection(ExtraUtils.USERS).document(auth.uid!!).set(userModel).addOnCompleteListener {
                 setInProgress(false)
                 if(it.isSuccessful){
                     Toast.makeText(activity,"Update Successful",Toast.LENGTH_LONG).show()
@@ -114,7 +115,7 @@ class ProfileFragment : Fragment() {
                     activity?.let { it1 -> Glide.with(it1).load(uri).into(binding.profileImg) }
                 }
             }
-            database.collection("users").document(auth.uid!!).get().addOnCompleteListener {
+            database.collection(ExtraUtils.USERS).document(auth.uid!!).get().addOnCompleteListener {
                 setInProgress(false)
                 if(it.isSuccessful){
                     userModel = it.result.toObject(UserModel::class.java)!!

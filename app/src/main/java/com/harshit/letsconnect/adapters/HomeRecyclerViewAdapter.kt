@@ -71,11 +71,11 @@ class HomeRecyclerViewAdapter(options: FirestoreRecyclerOptions<ChatroomModel>, 
 
                 holder.itemView.setOnClickListener {
                     val i = Intent(context, ChatActivity::class.java)
-                    i.putExtra("name",userModel?.getUsername())
-                    i.putExtra("uid",userModel?.getUserId())
-                    i.putExtra("phone",userModel?.getPhoneNumber())
-                    i.putExtra("time",userModel?.getTimestamp()?.toDate())
-                    i.putExtra("token",userModel?.getToken())
+                    i.putExtra(ExtraUtils.NAME,userModel?.getUsername())
+                    i.putExtra(ExtraUtils.UID,userModel?.getUserId())
+                    i.putExtra(ExtraUtils.PHONE,userModel?.getPhoneNumber())
+                    i.putExtra(ExtraUtils.TIME,userModel?.getTimestamp()?.toDate())
+                    i.putExtra(ExtraUtils.TOKEN,userModel?.getToken())
                     ContextCompat.startActivity(context,i,null)
                 }
             }

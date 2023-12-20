@@ -19,6 +19,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.storage.FirebaseStorage
+import com.harshit.letsconnect.extrasUtils.ExtraUtils
 import com.harshit.letsconnect.models.UserModel
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.coroutines.CoroutineScope
@@ -40,7 +41,7 @@ class MainActivity : AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance()
         database = FirebaseFirestore.getInstance()
-        sharedPreferences = getSharedPreferences("login", MODE_PRIVATE)
+        sharedPreferences = getSharedPreferences(ExtraUtils.LOGIN, MODE_PRIVATE)
 
         val drawer = findViewById<DrawerLayout>(R.id.drawer_layout)
         navigationView = findViewById(R.id.nav_view)
@@ -61,7 +62,7 @@ class MainActivity : AppCompatActivity() {
             if(it.isSuccessful){
                 val token = it.result
 //                Log.v("TAG",token)
-                database.collection("users").document(auth.currentUser!!.uid).update("token",token).addOnCompleteListener {task->
+                database.collection(ExtraUtils.USERS).document(auth.currentUser!!.uid).update(ExtraUtils.TOKEN,token).addOnCompleteListener {task->
                     if(task.isSuccessful){
                         Log.v("TAG","done")
                     }
@@ -79,7 +80,7 @@ class MainActivity : AppCompatActivity() {
         val headerEmail = headerView.findViewById<TextView>(R.id.nav_header_email)
         val headerImg = headerView.findViewById<CircleImageView>(R.id.nav_header_img)
         var imageUri: Uri? = null
-        val storageReference = FirebaseStorage.getInstance().reference.child("profile").child(auth.uid!!)
+        val storageReference = FirebaseStorage.getInstance().reference.child(ExtraUtils.PROFILE).child(auth.uid!!)
         CoroutineScope(Dispatchers.Default).launch {
             storageReference.downloadUrl.addOnCompleteListener {
                 if(it.isSuccessful){
@@ -87,7 +88,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-        database.collection("users").document(auth.uid!!).get().addOnCompleteListener {
+        database.collection(ExtraUtils.USERS).document(auth.uid!!).get().addOnCompleteListener {
             if(it.isSuccessful){
                 if(it.result.toObject(UserModel::class.java)!=null){
                     val userModel = it.result.toObject(UserModel::class.java)!!

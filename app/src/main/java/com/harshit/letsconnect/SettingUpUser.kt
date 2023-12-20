@@ -11,6 +11,7 @@ import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.harshit.letsconnect.databinding.ActivitySettingUpUserBinding
+import com.harshit.letsconnect.extrasUtils.ExtraUtils
 import com.harshit.letsconnect.models.UserModel
 
 class SettingUpUser : AppCompatActivity() {
@@ -22,7 +23,7 @@ class SettingUpUser : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this,R.layout.activity_setting_up_user)
-        phoneNumber = intent.getStringExtra("phone")!!
+        phoneNumber = intent.getStringExtra(ExtraUtils.PHONE)!!
         database = FirebaseFirestore.getInstance()
 
         uid = FirebaseAuth.getInstance().uid
@@ -54,7 +55,7 @@ class SettingUpUser : AppCompatActivity() {
         }
 
         uid?.let {  i ->
-            database.collection("users").document(i).set(userModel!!).addOnCompleteListener {
+            database.collection(ExtraUtils.USERS).document(i).set(userModel!!).addOnCompleteListener {
                 setInProgress(false)
                 if(it.isSuccessful){
                     Toast.makeText(applicationContext,"Username done", Toast.LENGTH_LONG).show()
@@ -73,7 +74,7 @@ class SettingUpUser : AppCompatActivity() {
     private fun getUserName() {
         setInProgress(true)
         uid?.let { i ->
-            database.collection("users").document(i).get().addOnCompleteListener {
+            database.collection(ExtraUtils.USERS).document(i).get().addOnCompleteListener {
                 setInProgress(false)
                 if(it.isSuccessful){
                     if(it.result.toObject(UserModel::class.java)!=null){

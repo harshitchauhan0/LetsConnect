@@ -38,9 +38,9 @@ class HomeFragment : Fragment() {
     }
 
     private fun setRecyclerView() {
-        val query = database.collection("chatroom")
-            .whereArrayContains("userIds", ExtraUtils.currentUserId()!!)
-            .orderBy("lastMessageTimestamp", Query.Direction.DESCENDING)
+        val query = database.collection(ExtraUtils.CHATROOM)
+            .whereArrayContains(ExtraUtils.USER_ID, ExtraUtils.currentUserId()!!)
+            .orderBy(ExtraUtils.LAST_MESSAGE_TIMESTAMP, Query.Direction.DESCENDING)
         val firestoreRecyclerOptions: FirestoreRecyclerOptions<ChatroomModel> = FirestoreRecyclerOptions.Builder<ChatroomModel>()
             .setQuery(query, ChatroomModel::class.java).build()
 
@@ -73,7 +73,7 @@ class HomeFragment : Fragment() {
             }
             else{
                 val intent = Intent(activity, SearchActivity::class.java)
-                intent.putExtra("name",binding.seachUsernameInput.text.toString())
+                intent.putExtra(ExtraUtils.NAME,binding.seachUsernameInput.text.toString())
                 startActivity(intent)
             }
 

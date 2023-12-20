@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import com.harshit.letsconnect.R
 import com.harshit.letsconnect.databinding.FragmentInviteBinding
+import com.harshit.letsconnect.extrasUtils.ExtraUtils
 
 class InviteFragment : Fragment() {
 
@@ -28,11 +29,11 @@ class InviteFragment : Fragment() {
             else{
                 val i = Intent(Intent.ACTION_SEND)
                 i.setType("text/plain");
-                i.putExtra(Intent.EXTRA_SUBJECT, "Sharing URL");
+                i.putExtra(Intent.EXTRA_SUBJECT, ExtraUtils.SHARING_URL);
                 message+="\n Link: "
                 message+= getString(R.string.link)
                 i.putExtra(Intent.EXTRA_TEXT, message);
-                startActivity(Intent.createChooser(i, "Share URL"));
+                startActivity(Intent.createChooser(i, ExtraUtils.SHARE_URL));
             }
         }
 

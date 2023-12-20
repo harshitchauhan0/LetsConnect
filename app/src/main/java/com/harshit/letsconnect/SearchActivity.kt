@@ -10,6 +10,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.FirebaseFirestore
 import com.harshit.letsconnect.adapters.searchRecyclerViewAdapter
 import com.harshit.letsconnect.databinding.ActivitySearchBinding
+import com.harshit.letsconnect.extrasUtils.ExtraUtils
 import com.harshit.letsconnect.models.UserModel
 
 class SearchActivity : AppCompatActivity() {
@@ -19,8 +20,8 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this,R.layout.activity_search)
 
-        if(intent.hasExtra("name")){
-            search(intent.getStringExtra("name")!!)
+        if(intent.hasExtra(ExtraUtils.NAME)){
+            search(intent.getStringExtra(ExtraUtils.NAME)!!)
         }
         binding.searchUserBtn.setOnClickListener {
             val name = binding.seachUsernameInput.text.toString()
@@ -40,8 +41,8 @@ class SearchActivity : AppCompatActivity() {
 
     private fun search(string: String) {
 
-        val query = FirebaseFirestore.getInstance().collection("users")
-            .whereGreaterThanOrEqualTo("username",string).whereLessThanOrEqualTo("username",string+"uf8ff")
+        val query = FirebaseFirestore.getInstance().collection(ExtraUtils.USERS)
+            .whereGreaterThanOrEqualTo(ExtraUtils.USERNAME,string).whereLessThanOrEqualTo(ExtraUtils.USERNAME,string+"uf8ff")
 
         val firestoreRecyclerOptions:FirestoreRecyclerOptions<UserModel>  = FirestoreRecyclerOptions.Builder<UserModel>()
             .setQuery(query, UserModel::class.java).build()

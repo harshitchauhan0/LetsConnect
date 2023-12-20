@@ -50,9 +50,9 @@ class ChatActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         binding.backBtn.setOnClickListener { onBackPressed() }
         val profilePick:CircleImageView = findViewById(R.id.profile_image)
-        val date: Date? = intent.getSerializableExtra("time") as? Date
-        userModel =  UserModel(intent.getStringExtra("phone")!!,intent.getStringExtra("name")!!,Timestamp(date!!),intent.getStringExtra("uid")!!)
-        userModel.setToken(intent.getStringExtra("token")!!)
+        val date: Date? = intent.getSerializableExtra(ExtraUtils.TIME) as? Date
+        userModel =  UserModel(intent.getStringExtra(ExtraUtils.PHONE)!!,intent.getStringExtra(ExtraUtils.NAME)!!,Timestamp(date!!),intent.getStringExtra(ExtraUtils.UID)!!)
+        userModel.setToken(intent.getStringExtra(ExtraUtils.TOKEN)!!)
         binding.otherUsername.text = userModel.getUsername()
         chatroomId = getChatRoomId(auth.currentUser?.uid.toString(),userModel.getUserId())
         ExtraUtils.getOtherImage(userModel.getUserId()).downloadUrl.addOnCompleteListener { task->
@@ -99,10 +99,10 @@ class ChatActivity : AppCompatActivity() {
         chatroomModel?.lastMessageSenderId = auth.currentUser!!.uid
         chatroomModel?.lastMessageTimestamp = Timestamp.now()
         chatroomModel?.lastMessage = message
-        database.collection("chatroom").document(chatroomId).set(chatroomModel as ChatroomModel)
+        database.collection(ExtraUtils.CHATROOM).document(chatroomId).set(chatroomModel as ChatroomModel)
 
         val messageModel = MessageModel(message,auth.currentUser!!.uid, Timestamp.now())
-        database.collection("chatroom").document(chatroomId).collection("chats").add(messageModel).addOnCompleteListener {
+        database.collection(ExtraUtils.CHATROOM).document(chatroomId).collection(ExtraUtils.CHATS).add(messageModel).addOnCompleteListener {
             if(it.isSuccessful){
                 binding.chatMessageInput.setText("")
                 sendNotification(message)
@@ -114,7 +114,7 @@ class ChatActivity : AppCompatActivity() {
     }
 
     private fun sendNotification(message: String) {
-        database.collection("users").document(auth.currentUser!!.uid).get().addOnCompleteListener {
+        database.collection(ExtraUtils.USERS).document(auth.currentUser!!.uid).get().addOnCompleteListener {
             if(it.isSuccessful){
                 val model = it.result.toObject(UserModel::class.java)
                 if(model!=null){
@@ -140,22 +140,19 @@ class ChatActivity : AppCompatActivity() {
     private fun callApi(jsonObject:JSONObject){
         val json: MediaType = "application/json; charset=utf-8".toMediaType()
         val client = OkHttpClient()
-        val url = "https://fcm.googleapis.com/fcm/send"
+        val url = ExtraUtils.URL_NOTIFICATION
         val body: RequestBody = jsonObject.toString().toRequestBody(json)
-        TODO("I have to add Api key first")
         val request: Request = Request.Builder()
             .url(url)
             .post(body)
-            .header("Authorization", "Bearer ")
+            .header("Authorization", "Bearer ${ExtraUtils.NOTIFICATION_API_KEY}")
             .build()
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-//                TODO("Not yet implemented")
                 Log.v("TAG",e.toString())
             }
 
             override fun onResponse(call: Call, response: Response) {
-//                TODO("Not yet implemented")
             }
         })
 
@@ -165,12 +162,12 @@ class ChatActivity : AppCompatActivity() {
 
     private fun getCreateChatRoomModel() {
 
-        database.collection("chatroom").document(chatroomId).get().addOnCompleteListener {
+        database.collection(ExtraUtils.CHATROOM).document(chatroomId).get().addOnCompleteListener {
             if(it.isSuccessful){
                 chatroomModel = it.result.toObject(ChatroomModel::class.java)
                 if(chatroomModel == null){
                     chatroomModel = ChatroomModel(chatroomId, mutableListOf(auth.currentUser?.uid.toString(),userModel.getUserId()),Timestamp.now(),"")
-                    database.collection("chatroom").document(chatroomId).set(chatroomModel as ChatroomModel)
+                    database.collection(ExtraUtils.CHATROOM).document(chatroomId).set(chatroomModel as ChatroomModel)
                 }
             }
             else{

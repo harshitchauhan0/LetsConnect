@@ -15,6 +15,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.messaging.FirebaseMessaging
 import com.harshit.letsconnect.IntroductionActivity
 import com.harshit.letsconnect.R
+import com.harshit.letsconnect.extrasUtils.ExtraUtils
 
 
 class LogoutFragment : Fragment() {
@@ -23,15 +24,15 @@ class LogoutFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-         val sp: SharedPreferences? = context?.getSharedPreferences("login", Context.MODE_PRIVATE)
-         AlertDialog.Builder(activity).setTitle("LOG OUT")
+         val sp: SharedPreferences? = context?.getSharedPreferences(ExtraUtils.LOGIN, Context.MODE_PRIVATE)
+         AlertDialog.Builder(activity).setTitle(ExtraUtils.LOG_OUT)
             .setIcon(com.google.android.gms.base.R.drawable.common_full_open_on_phone)
-            .setMessage("Are you sure you want to log out?")
+            .setMessage(ExtraUtils.LOG_OUT_MSG)
             .setPositiveButton("Yes"){ _, _ ->
                 FirebaseMessaging.getInstance().deleteToken().addOnCompleteListener {
                     if(it.isSuccessful){
                         Toast.makeText(context,"You are logged out",Toast.LENGTH_LONG).show()
-                        sp!!.edit().putBoolean("logged", false).apply()
+                        sp!!.edit().putBoolean(ExtraUtils.LOGGED, false).apply()
                         FirebaseAuth.getInstance().signOut()
                         val intent = Intent(context, IntroductionActivity::class.java)
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)

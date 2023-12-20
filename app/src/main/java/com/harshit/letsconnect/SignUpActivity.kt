@@ -14,6 +14,7 @@ import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
 import com.google.firebase.database.FirebaseDatabase
 import com.harshit.letsconnect.databinding.ActivitySignUpBinding
+import com.harshit.letsconnect.extrasUtils.ExtraUtils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -94,12 +95,10 @@ class SignUpActivity : AppCompatActivity() {
     }
 
     private fun startResendTimer() {
-        val scope = CoroutineScope(Dispatchers.Main)
         var timing = 60L
-
         signUpActivitybinding.resendTV.isEnabled = false
 
-        scope.launch {
+        CoroutineScope(Dispatchers.Main).launch {
             while (timing > 0) {
                 timing--
                 signUpActivitybinding.resendTV.text = "Resend in $timing s"
@@ -118,7 +117,7 @@ class SignUpActivity : AppCompatActivity() {
             setInProgress(false)
             if(it.isSuccessful){
                 Toast.makeText(applicationContext,"OTP Verification done",Toast.LENGTH_LONG).show()
-                startActivity(Intent(this,SettingUpUser::class.java).putExtra("phone",phoneNumber))
+                startActivity(Intent(this,SettingUpUser::class.java).putExtra(ExtraUtils.PHONE,phoneNumber))
             }
             else{
                 Toast.makeText(applicationContext,"OTP Verification failed",Toast.LENGTH_LONG).show()

@@ -61,11 +61,11 @@ class searchRecyclerViewAdapter(options: FirestoreRecyclerOptions<UserModel>, co
         holder.itemView.setOnClickListener {
 //            Log.v("TAG",model.toString())
             val i = Intent(context, ChatActivity::class.java)
-            i.putExtra("name",model.getUsername())
-            i.putExtra("uid",model.getUserId())
-            i.putExtra("phone",model.getPhoneNumber())
-            i.putExtra("time",model.getTimestamp().toDate())
-            i.putExtra("token",model.getToken())
+            i.putExtra(ExtraUtils.NAME,model.getUsername())
+            i.putExtra(ExtraUtils.UID,model.getUserId())
+            i.putExtra(ExtraUtils.PHONE,model.getPhoneNumber())
+            i.putExtra(ExtraUtils.TIME,model.getTimestamp().toDate())
+            i.putExtra(ExtraUtils.TOKEN,model.getToken())
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             ContextCompat.startActivity(context,i,null)
         }
